@@ -1,0 +1,20 @@
+{
+  "manifest_version": 3,
+  "name": "TabClipboard",
+  "short_name": "TabClipboard",
+  "version": "1.0.0",
+  "description": "Collect and organize tab data before sending it to the clipboard.",
+  "minimum_chrome_version": "114",
+  "permissions": ["sidePanel"],
+  "background": {
+    "service_worker": "assets/background.js",
+    "type": "module"
+  },
+  "action": {
+    "default_title": "Open TabClipboard",
+    "default_popup": "popup/index.html"
+  },
+  "side_panel": {
+    "default_path": "sidepanel/index.html"
+  }
+}

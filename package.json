@@ -1,0 +1,40 @@
+{
+  "name": "tab-clipboard",
+  "version": "1.0.0",
+  "description": "A focused Chrome extension for working with tab data and the clipboard.",
+  "private": true,
+  "scripts": {
+    "dev": "vite build --watch --mode development",
+    "build": "vite build",
+    "typecheck": "tsc --noEmit -p tsconfig.json && tsc --noEmit -p tsconfig.vite.json",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "check": "pnpm typecheck && pnpm test && pnpm build",
+    "prepare": "effect-tsgo patch --typescript --oxlint"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "MIT",
+  "devEngines": {
+    "packageManager": {
+      "name": "pnpm",
+      "version": "^11.15.0",
+      "onFail": "download"
+    }
+  },
+  "type": "module",
+  "dependencies": {
+    "effect": "4.0.0-rc.112"
+  },
+  "devDependencies": {
+    "@effect/vitest": "4.0.0-rc.112",
+    "@types/chrome": "0.2.9",
+    "@types/node": "22.20.2",
+    "vite": "8.3.0",
+    "vitest": "4.1.11",
+    "oxlint-tsgolint": "7.0.2001",
+    "oxlint": "1.82.0",
+    "typescript": "7.0.2",
+    "@effect/tsgo": "0.44.0"
+  }
+}

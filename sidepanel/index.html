@@ -1,0 +1,29 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="color-scheme" content="light">
+    <title>TabClipboard Workspace</title>
+  </head>
+  <body>
+    <main class="panel-shell">
+      <header>
+        <div>
+          <p class="eyebrow">Workspace</p>
+          <h1>TabClipboard</h1>
+        </div>
+        <span class="status-dot" title="Extension runtime ready"></span>
+      </header>
+      <section class="empty-state" aria-labelledby="empty-title">
+        <span class="index">01</span>
+        <div>
+          <h2 id="empty-title">Your collection starts here.</h2>
+          <p>Add tab capture and clipboard behavior on top of this typed Effect boundary.</p>
+        </div>
+      </section>
+      <footer id="runtime-status" role="status" aria-live="polite">Effect runtime connected</footer>
+    </main>
+    <script type="module" src="/src/sidepanel/main.ts"></script>
+  </body>
+</html>
