@@ -1,0 +1,16 @@
+{
+  "bootstrap-sha": "a819148b842de2fc56e87181cdd513f93668f741",
+  "packages": {
+    ".": {
+      "release-type": "node",
+      "include-component-in-tag": false,
+      "extra-files": [
+        {
+          "type": "json",
+          "path": "public/manifest.json",
+          "jsonpath": "$.version"
+        }
+      ]
+    }
+  }
+}

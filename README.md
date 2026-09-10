@@ -67,4 +67,10 @@ pnpm test
 pnpm build
 ```
 
+## Releases
+
+Changes merged into `main` are processed by Release Please using Conventional Commit messages. Commits beginning with `fix:` produce patch versions, `feat:` commits produce minor versions, and commits marked with `!` or a `BREAKING CHANGE` footer produce major versions.
+
+Release Please maintains a release pull request that updates `CHANGELOG.md`, `package.json`, and the extension version in `public/manifest.json`. Merging that pull request creates a GitHub release and attaches a store-ready `tab-clipboard-<version>.zip` package.
+
 The extension uses TypeScript 7, Effect v4, Vite, and Manifest V3. See `AGENTS.md` for the project architecture and contribution rules.
