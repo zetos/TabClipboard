@@ -67,6 +67,12 @@ pnpm test
 pnpm build
 ```
 
+## Legal
+
+TabClipboard processes tab URLs and clipboard text locally and only after a user selects an action. See the published [privacy policy](https://zetos.github.io/TabClipboard/privacy/) for details.
+
+The source code is available under the [MIT License](LICENSE).
+
 ## Releases
 
 Changes merged into `main` are processed by Release Please using Conventional Commit messages. Commits beginning with `fix:` produce patch versions, `feat:` commits produce minor versions, and commits marked with `!` or a `BREAKING CHANGE` footer produce major versions.
