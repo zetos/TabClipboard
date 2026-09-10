@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.3.0](https://github.com/zetos/TabClipboard/compare/v1.2.0...v1.3.0) (2026-09-10)
+
+
+### Features
+
+* add privacy policy and legal information pages ([8637296](https://github.com/zetos/TabClipboard/commit/8637296aa41463c15ac76a82778f0b03151cd86c))
+* publish privacy policy and add MIT license ([b2308f6](https://github.com/zetos/TabClipboard/commit/b2308f6990eff04bcb1fc096d78d8da5baf1c062))
+
 ## [1.2.0](https://github.com/zetos/TabClipboard/compare/v1.1.0...v1.2.0) (2026-09-10)
 
 
