@@ -2,7 +2,7 @@
   "manifest_version": 3,
   "name": "TabClipboard",
   "short_name": "TabClipboard",
-  "version": "1.1.0",
+  "version": "1.2.0",
   "description": "Copy all open web tab links or open links from the clipboard.",
   "minimum_chrome_version": "114",
   "icons": {
