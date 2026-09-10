@@ -1,0 +1,152 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="color-scheme" content="light dark">
+    <meta name="referrer" content="no-referrer">
+    <meta
+      http-equiv="Content-Security-Policy"
+      content="default-src 'none'; style-src 'self'; script-src 'none'; connect-src 'none'; img-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'"
+    >
+    <meta
+      name="description"
+      content="Privacy policy for the TabClipboard Chrome extension."
+    >
+    <title>Privacy Policy | TabClipboard</title>
+    <link rel="stylesheet" href="../styles.css">
+  </head>
+  <body>
+    <main class="shell">
+      <a class="back-link" href="../">&lt;- TabClipboard</a>
+
+      <header class="policy-header">
+        <p class="eyebrow">TabClipboard / Privacy</p>
+        <h1>Privacy policy</h1>
+        <p class="effective-date">Effective September 10, 2026</p>
+      </header>
+
+      <p class="lede">
+        TabClipboard moves HTTP and HTTPS links between your open Chrome tabs and
+        system clipboard. It performs these operations locally and only when you
+        request them.
+      </p>
+
+      <ol class="policy-list">
+        <li>
+          <section aria-labelledby="information-handled">
+            <p class="section-number" aria-hidden="true">01</p>
+            <div>
+              <h2 id="information-handled">Information handled</h2>
+              <p>
+                TabClipboard can process open-tab URLs and text from your system
+                clipboard. URLs and clipboard text may contain personal or
+                sensitive information.
+              </p>
+            </div>
+          </section>
+        </li>
+        <li>
+          <section aria-labelledby="user-actions">
+            <p class="section-number" aria-hidden="true">02</p>
+            <div>
+              <h2 id="user-actions">User-requested actions</h2>
+              <p>
+                When you select <strong>Copy open tabs</strong>, TabClipboard reads
+                the URLs of open tabs, keeps HTTP and HTTPS URLs, and writes them
+                to your clipboard as one URL per line.
+              </p>
+              <p>
+                When you select <strong>Open clipboard links</strong>, TabClipboard
+                reads clipboard text, identifies valid HTTP and HTTPS URLs, and
+                opens them as background tabs. Blank, malformed, and non-web
+                entries are skipped.
+              </p>
+              <p>TabClipboard does not perform either operation automatically.</p>
+            </div>
+          </section>
+        </li>
+        <li>
+          <section aria-labelledby="data-practices">
+            <p class="section-number" aria-hidden="true">03</p>
+            <div>
+              <h2 id="data-practices">Data practices</h2>
+              <p>
+                Processing occurs locally in your browser. TabClipboard does not
+                transmit tab URLs or clipboard contents to the publisher or any
+                external service. It does not collect, retain, sell, or share this
+                information, and it does not maintain its own stored copy after an
+                action completes.
+              </p>
+            </div>
+          </section>
+        </li>
+        <li>
+          <section aria-labelledby="permissions">
+            <p class="section-number" aria-hidden="true">04</p>
+            <div>
+              <h2 id="permissions">Chrome permissions</h2>
+              <dl>
+                <dt><code>tabs</code></dt>
+                <dd>Reads open-tab URLs and creates background tabs.</dd>
+                <dt><code>clipboardRead</code></dt>
+                <dd>Reads clipboard text after you request that links be opened.</dd>
+                <dt><code>clipboardWrite</code></dt>
+                <dd>Writes tab URLs after you request that they be copied.</dd>
+              </dl>
+            </div>
+          </section>
+        </li>
+        <li>
+          <section aria-labelledby="tracking">
+            <p class="section-number" aria-hidden="true">05</p>
+            <div>
+              <h2 id="tracking">Tracking and services</h2>
+              <p>
+                The extension does not use analytics, advertising, accounts,
+                tracking technologies, remote APIs, or remotely hosted executable
+                code.
+              </p>
+            </div>
+          </section>
+        </li>
+        <li>
+          <section aria-labelledby="policy-site">
+            <p class="section-number" aria-hidden="true">06</p>
+            <div>
+              <h2 id="policy-site">This policy website</h2>
+              <p>
+                This website adds no analytics, cookies, or client-side scripts. It
+                is hosted by GitHub Pages, so GitHub may process technical request
+                information under its
+                <a href="https://docs.github.com/en/site-policy/privacy-policies/github-general-privacy-statement" rel="noreferrer">Privacy Statement</a>.
+              </p>
+            </div>
+          </section>
+        </li>
+        <li>
+          <section aria-labelledby="changes-contact">
+            <p class="section-number" aria-hidden="true">07</p>
+            <div>
+              <h2 id="changes-contact">Changes and contact</h2>
+              <p>
+                This policy will be updated if TabClipboard's data practices
+                change. The effective date above will identify the latest version.
+              </p>
+              <p>
+                For privacy questions, contact the publisher through
+                <a href="https://github.com/zetos/TabClipboard/issues" rel="noreferrer">GitHub Issues</a>.
+              </p>
+            </div>
+          </section>
+        </li>
+      </ol>
+
+      <footer>
+        <a href="https://github.com/zetos/TabClipboard" rel="noreferrer">Source on GitHub</a>
+        <span aria-hidden="true">/</span>
+        <a href="https://github.com/zetos/TabClipboard/blob/main/LICENSE" rel="noreferrer">MIT License</a>
+      </footer>
+    </main>
+  </body>
+</html>
