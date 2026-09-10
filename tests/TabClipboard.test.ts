@@ -200,6 +200,39 @@ describe('openClipboardLinks', () => {
       }),
   );
 
+  it.effect('reports when every valid tab fails to open', () =>
+    Effect.gen(function* () {
+      const layer = Layer.mergeAll(
+        Layer.succeed(
+          Clipboard,
+          Clipboard.of({
+            readText: Effect.succeed(
+              'https://example.com/a\nhttps://example.com/b',
+            ),
+            writeText: () => Effect.void,
+          }),
+        ),
+        Layer.succeed(
+          Tabs,
+          Tabs.of({
+            queryUrlCandidates: Effect.succeed([]),
+            open: (url) =>
+              Effect.fail(
+                new TabCreateError({
+                  url: url.href,
+                  cause: 'create rejected',
+                }),
+              ),
+          }),
+        ),
+      );
+
+      const result = yield* openClipboardLinks.pipe(Effect.provide(layer));
+
+      assert.deepStrictEqual(result, { opened: 0, skipped: 0, failed: 2 });
+    }),
+  );
+
   it.effect('fails when the clipboard has no valid web URLs', () =>
     Effect.gen(function* () {
       const layer = Layer.mergeAll(

@@ -22,20 +22,34 @@ export class Clipboard extends Context.Service<
 
 const decodeClipboardText = Schema.decodeUnknownEffect(Schema.String);
 
-export const ClipboardLive = Layer.succeed(
-  Clipboard,
-  Clipboard.of({
-    readText: Effect.tryPromise({
-      try: () => navigator.clipboard.readText(),
-      catch: (cause) => new ClipboardReadError({ cause }),
-    }).pipe(
-      Effect.flatMap(decodeClipboardText),
-      Effect.mapError((cause) => new ClipboardReadError({ cause })),
-    ),
-    writeText: (text) =>
-      Effect.tryPromise({
-        try: () => navigator.clipboard.writeText(text),
-        catch: (cause) => new ClipboardWriteError({ cause }),
-      }),
-  }),
-);
+export interface ClipboardApi {
+  readonly readText: () => Promise<unknown>;
+  readonly writeText: (text: string) => Promise<unknown>;
+}
+
+export const makeClipboardLive = (clipboard: ClipboardApi) =>
+  Layer.succeed(
+    Clipboard,
+    Clipboard.of({
+      readText: Effect.tryPromise({
+        try: () => clipboard.readText(),
+        catch: (cause) => new ClipboardReadError({ cause }),
+      }).pipe(
+        Effect.flatMap((text) =>
+          decodeClipboardText(text).pipe(
+            Effect.mapError((cause) => new ClipboardReadError({ cause })),
+          ),
+        ),
+      ),
+      writeText: (text) =>
+        Effect.tryPromise({
+          try: () => clipboard.writeText(text),
+          catch: (cause) => new ClipboardWriteError({ cause }),
+        }).pipe(Effect.asVoid),
+    }),
+  );
+
+export const ClipboardLive = makeClipboardLive({
+  readText: () => navigator.clipboard.readText(),
+  writeText: (text) => navigator.clipboard.writeText(text),
+});
