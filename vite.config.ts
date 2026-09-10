@@ -8,7 +8,6 @@ export default defineConfig({
     target: "chrome114",
     rolldownOptions: {
       input: {
-        background: resolve(import.meta.dirname, "src/background/main.ts"),
         popup: resolve(import.meta.dirname, "popup/index.html"),
         sidepanel: resolve(import.meta.dirname, "sidepanel/index.html")
       },

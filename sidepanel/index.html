@@ -13,16 +13,30 @@
           <p class="eyebrow">Workspace</p>
           <h1>TabClipboard</h1>
         </div>
-        <span class="status-dot" title="Extension runtime ready"></span>
+        <span class="status-dot" title="Ready"></span>
       </header>
-      <section class="empty-state" aria-labelledby="empty-title">
-        <span class="index">01</span>
-        <div>
-          <h2 id="empty-title">Your collection starts here.</h2>
-          <p>Add tab capture and clipboard behavior on top of this typed Effect boundary.</p>
+      <section class="actions" aria-labelledby="actions-title">
+        <div class="intro">
+          <p class="index">01 / 02</p>
+          <h2 id="actions-title">Move links in either direction.</h2>
+          <p>One link per line. Only HTTP and HTTPS links are included.</p>
         </div>
+        <button id="copy-tab-links" class="action" type="button">
+          <span class="action-number">01</span>
+          <span>
+            <strong>Copy all open tab links</strong>
+            <small>Collect web links from every Chrome window.</small>
+          </span>
+        </button>
+        <button id="open-clipboard-links" class="action action-secondary" type="button">
+          <span class="action-number">02</span>
+          <span>
+            <strong>Open links from clipboard</strong>
+            <small>Create a background tab for each valid line.</small>
+          </span>
+        </button>
       </section>
-      <footer id="runtime-status" role="status" aria-live="polite">Effect runtime connected</footer>
+      <footer id="runtime-status" role="status" aria-live="polite">Ready</footer>
     </main>
     <script type="module" src="/src/sidepanel/main.ts"></script>
   </body>

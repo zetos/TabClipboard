@@ -55,18 +55,18 @@ h1 {
   box-shadow: 0 0 0 4px rgb(61 124 91 / 14%);
 }
 
-.empty-state {
+.actions {
   display: grid;
   align-content: center;
-  grid-template-columns: 38px 1fr;
-  gap: 16px;
+  gap: 12px;
   padding: 48px 0;
 }
 
 .index {
-  padding-top: 7px;
+  margin: 0 0 10px;
   color: #e05a33;
   font: 700 11px/1 system-ui, sans-serif;
+  letter-spacing: 0.12em;
 }
 
 h2 {
@@ -78,11 +78,67 @@ h2 {
   letter-spacing: -0.035em;
 }
 
-.empty-state p {
+.intro {
+  margin-bottom: 16px;
+}
+
+.intro p:last-child {
   max-width: 340px;
   margin: 18px 0 0;
   color: #536075;
   font: 14px/1.6 system-ui, sans-serif;
+}
+
+.action {
+  display: grid;
+  grid-template-columns: 32px 1fr;
+  gap: 12px;
+  width: 100%;
+  padding: 18px 16px;
+  border: 1px solid #152238;
+  border-radius: 0;
+  color: #f9f5eb;
+  text-align: left;
+  background: #152238;
+  cursor: pointer;
+}
+
+.action-secondary {
+  color: #152238;
+  background: transparent;
+}
+
+.action:hover,
+.action:focus-visible {
+  color: #152238;
+  background: #f2b544;
+}
+
+.action:disabled {
+  color: #777267;
+  border-color: #b8ad9b;
+  background: #e9e1d4;
+  cursor: wait;
+}
+
+.action-number {
+  color: #e05a33;
+  font: 700 10px/1 system-ui, sans-serif;
+}
+
+.action strong,
+.action small {
+  display: block;
+}
+
+.action strong {
+  font: 700 13px/1.25 system-ui, sans-serif;
+}
+
+.action small {
+  margin-top: 7px;
+  font: 11px/1.45 system-ui, sans-serif;
+  opacity: 0.76;
 }
 
 footer {

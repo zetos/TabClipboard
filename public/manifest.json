@@ -3,13 +3,9 @@
   "name": "TabClipboard",
   "short_name": "TabClipboard",
   "version": "1.0.0",
-  "description": "Collect and organize tab data before sending it to the clipboard.",
+  "description": "Copy all open web tab links or open links from the clipboard.",
   "minimum_chrome_version": "114",
-  "permissions": ["sidePanel"],
-  "background": {
-    "service_worker": "assets/background.js",
-    "type": "module"
-  },
+  "permissions": ["sidePanel", "tabs", "clipboardRead", "clipboardWrite"],
   "action": {
     "default_title": "Open TabClipboard",
     "default_popup": "popup/index.html"

@@ -7,9 +7,10 @@
     "dev": "vite build --watch --mode development",
     "build": "vite build",
     "typecheck": "tsc --noEmit -p tsconfig.json && tsc --noEmit -p tsconfig.vite.json",
+    "lint": "oxlint --type-aware .",
     "test": "vitest run",
     "test:watch": "vitest",
-    "check": "pnpm typecheck && pnpm test && pnpm build",
+    "check": "pnpm typecheck && pnpm lint && pnpm test && pnpm build",
     "prepare": "effect-tsgo patch --typescript --oxlint"
   },
   "keywords": [],
