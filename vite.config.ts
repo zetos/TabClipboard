@@ -1,21 +1,20 @@
-import { resolve } from "node:path"
-import { defineConfig } from "vite"
+import { resolve } from 'node:path';
+import { defineConfig } from 'vite';
 
 export default defineConfig({
-  base: "./",
+  base: './',
   build: {
     emptyOutDir: true,
-    target: "chrome114",
+    target: 'chrome114',
     rolldownOptions: {
       input: {
-        popup: resolve(import.meta.dirname, "popup/index.html"),
-        sidepanel: resolve(import.meta.dirname, "sidepanel/index.html")
+        popup: resolve(import.meta.dirname, 'popup/index.html'),
       },
       output: {
-        entryFileNames: "assets/[name].js",
-        chunkFileNames: "assets/[name]-[hash].js",
-        assetFileNames: "assets/[name]-[hash][extname]"
-      }
-    }
-  }
-})
+        entryFileNames: 'assets/[name].js',
+        chunkFileNames: 'assets/[name]-[hash].js',
+        assetFileNames: 'assets/[name]-[hash][extname]',
+      },
+    },
+  },
+});

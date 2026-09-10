@@ -39,11 +39,10 @@ After rebuilding, return to `chrome://extensions` and select the reload button o
 ## Use
 
 1. Select the TabClipboard toolbar icon.
-2. Select **Open workspace** to open the side panel.
-3. Select **Copy all open tab links** to place all open HTTP(S) tab URLs on the clipboard.
-4. Select **Open links from clipboard** to read one link per line and open each valid HTTP(S) URL in a new background tab.
+2. Select **Copy open tabs** to place all open HTTP(S) tab URLs on the clipboard.
+3. Select **Open clipboard links** to read one link per line and open each valid HTTP(S) URL in a new background tab.
 
-The status at the bottom of the side panel reports copied, opened, skipped, and failed counts. The extension needs `tabs`, `clipboardRead`, `clipboardWrite`, and `sidePanel` permissions for these operations.
+The status at the bottom of the popup reports copied, opened, skipped, and failed counts. The popup follows your light or dark color-scheme preference without requesting theme access. The extension needs only `tabs`, `clipboardRead`, and `clipboardWrite` permissions for its operations.
 
 ## Development
 

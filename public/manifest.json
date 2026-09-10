@@ -5,12 +5,9 @@
   "version": "1.0.0",
   "description": "Copy all open web tab links or open links from the clipboard.",
   "minimum_chrome_version": "114",
-  "permissions": ["sidePanel", "tabs", "clipboardRead", "clipboardWrite"],
+  "permissions": ["tabs", "clipboardRead", "clipboardWrite"],
   "action": {
-    "default_title": "Open TabClipboard",
+    "default_title": "TabClipboard",
     "default_popup": "popup/index.html"
-  },
-  "side_panel": {
-    "default_path": "sidepanel/index.html"
   }
 }
