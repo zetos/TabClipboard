@@ -19,7 +19,7 @@
   "devEngines": {
     "packageManager": {
       "name": "pnpm",
-      "version": "^11.15.0",
+      "version": "^12.4.2",
       "onFail": "download"
     }
   },
@@ -28,14 +28,14 @@
     "effect": "4.0.0-rc.112"
   },
   "devDependencies": {
+    "@effect/tsgo": "0.44.0",
     "@effect/vitest": "4.0.0-rc.112",
     "@types/chrome": "0.2.9",
     "@types/node": "22.20.2",
-    "vite": "8.3.0",
-    "vitest": "4.1.11",
-    "oxlint-tsgolint": "7.0.2001",
     "oxlint": "1.82.0",
+    "oxlint-tsgolint": "7.0.2001",
     "typescript": "7.0.2",
-    "@effect/tsgo": "0.44.0"
+    "vite": "8.3.0",
+    "vitest": "4.1.11"
   }
 }
