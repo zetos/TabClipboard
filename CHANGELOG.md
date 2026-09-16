@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.4.0](https://github.com/zetos/TabClipboard/compare/v1.3.0...v1.4.0) (2026-09-16)
+
+
+### Features
+
+* add current-window tab copying ([#6](https://github.com/zetos/TabClipboard/issues/6)) ([8931be1](https://github.com/zetos/TabClipboard/commit/8931be1648133314cb68ecf688f6e50f131a51ce))
+* add SVG icons and update .gitignore for design assets ([#8](https://github.com/zetos/TabClipboard/issues/8)) ([4f543e6](https://github.com/zetos/TabClipboard/commit/4f543e632fdb06d12603cbcee830a889c706bfb2))
+
 ## [1.3.0](https://github.com/zetos/TabClipboard/compare/v1.2.0...v1.3.0) (2026-09-10)
 
 
