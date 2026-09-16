@@ -2,9 +2,10 @@
 
 TabClipboard is a small Chrome extension for moving groups of links between browser tabs and the system clipboard.
 
-It provides two actions:
+It provides three actions:
 
 - Copy the HTTP(S) links from every open tab across all Chrome windows.
+- Copy the HTTP(S) links from tabs in the current Chrome window.
 - Open one new background tab for each valid HTTP(S) link in the clipboard.
 
 Links are represented as one URL per line. Their order and duplicates are preserved. Blank lines, malformed values, and non-web protocols such as `chrome:` or `file:` are skipped and reported in the extension status.
@@ -39,8 +40,9 @@ After rebuilding, return to `chrome://extensions` and select the reload button o
 ## Use
 
 1. Select the TabClipboard toolbar icon.
-2. Select **Copy open tabs** to place all open HTTP(S) tab URLs on the clipboard.
-3. Select **Open clipboard links** to read one link per line and open each valid HTTP(S) URL in a new background tab.
+2. Select **Copy tabs from all windows** to place HTTP(S) tab URLs from every Chrome window on the clipboard.
+3. Select **Copy tabs from this window** to copy only the HTTP(S) tab URLs in the current window.
+4. Select **Open clipboard links** to read one link per line and open each valid HTTP(S) URL in a new background tab.
 
 The status at the bottom of the popup reports copied, opened, skipped, and failed counts. The popup follows your light or dark color-scheme preference without requesting theme access. The extension needs only `tabs`, `clipboardRead`, and `clipboardWrite` permissions for its operations.
 

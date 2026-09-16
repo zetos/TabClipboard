@@ -5,9 +5,15 @@ import {
   ClipboardReadError,
   ClipboardWriteError,
 } from '../src/services/Clipboard';
-import { TabCreateError, Tabs, TabsQueryError } from '../src/services/Tabs';
 import {
-  copyOpenTabLinks,
+  TabCreateError,
+  Tabs,
+  TabsQueryError,
+  type TabQueryScope,
+} from '../src/services/Tabs';
+import {
+  copyAllOpenTabLinks,
+  copyCurrentWindowTabLinks,
   openClipboardLinks,
 } from '../src/workflows/TabClipboard';
 
@@ -22,28 +28,32 @@ const unusedClipboard = Layer.succeed(
 const unusedTabs = Layer.succeed(
   Tabs,
   Tabs.of({
-    queryUrlCandidates: Effect.succeed([]),
+    queryUrlCandidates: () => Effect.succeed([]),
     open: () => Effect.void,
   }),
 );
 
-describe('copyOpenTabLinks', () => {
+describe('copy tab links', () => {
   it.effect(
     'writes normalized web tab URLs in order and preserves duplicates',
     () =>
       Effect.gen(function* () {
         const written = yield* Ref.make('');
+        const scopes = yield* Ref.make<ReadonlyArray<TabQueryScope>>([]);
         const layer = Layer.mergeAll(
           Layer.succeed(
             Tabs,
             Tabs.of({
-              queryUrlCandidates: Effect.succeed([
-                'https://example.com/one',
-                undefined,
-                'chrome://extensions',
-                'https://example.com/one',
-                'http://effect.website',
-              ]),
+              queryUrlCandidates: (scope) =>
+                Ref.update(scopes, (values) => [...values, scope]).pipe(
+                  Effect.as([
+                    'https://example.com/one',
+                    undefined,
+                    'chrome://extensions',
+                    'https://example.com/one',
+                    'http://effect.website',
+                  ]),
+                ),
               open: () => Effect.void,
             }),
           ),
@@ -56,10 +66,11 @@ describe('copyOpenTabLinks', () => {
           ),
         );
 
-        const result = yield* copyOpenTabLinks.pipe(Effect.provide(layer));
+        const result = yield* copyAllOpenTabLinks.pipe(Effect.provide(layer));
         const clipboardText = yield* Ref.get(written);
 
         assert.deepStrictEqual(result, { copied: 3, skipped: 2 });
+        assert.deepStrictEqual(yield* Ref.get(scopes), ['allWindows']);
         assert.strictEqual(
           clipboardText,
           'https://example.com/one\nhttps://example.com/one\nhttp://effect.website/',
@@ -76,10 +87,8 @@ describe('copyOpenTabLinks', () => {
           Layer.succeed(
             Tabs,
             Tabs.of({
-              queryUrlCandidates: Effect.succeed([
-                undefined,
-                'chrome://settings',
-              ]),
+              queryUrlCandidates: () =>
+                Effect.succeed([undefined, 'chrome://settings']),
               open: () => Effect.void,
             }),
           ),
@@ -92,13 +101,14 @@ describe('copyOpenTabLinks', () => {
           ),
         );
 
-        const error = yield* copyOpenTabLinks.pipe(
+        const error = yield* copyAllOpenTabLinks.pipe(
           Effect.provide(layer),
           Effect.flip,
         );
 
         assert.strictEqual(error._tag, 'NoValidWebUrlsError');
         if (error._tag === 'NoValidWebUrlsError') {
+          assert.strictEqual(error.source, 'allWindowsTabs');
           assert.strictEqual(error.skipped, 2);
         }
         assert.strictEqual(yield* Ref.get(writes), 0);
@@ -112,13 +122,13 @@ describe('copyOpenTabLinks', () => {
         Layer.succeed(
           Tabs,
           Tabs.of({
-            queryUrlCandidates: Effect.fail(queryError),
+            queryUrlCandidates: () => Effect.fail(queryError),
             open: () => Effect.void,
           }),
         ),
         unusedClipboard,
       );
-      const queryFailure = yield* copyOpenTabLinks.pipe(
+      const queryFailure = yield* copyAllOpenTabLinks.pipe(
         Effect.provide(queryLayer),
         Effect.flip,
       );
@@ -130,7 +140,8 @@ describe('copyOpenTabLinks', () => {
         Layer.succeed(
           Tabs,
           Tabs.of({
-            queryUrlCandidates: Effect.succeed(['https://example.com']),
+            queryUrlCandidates: () =>
+              Effect.succeed(['https://example.com']),
             open: () => Effect.void,
           }),
         ),
@@ -142,12 +153,79 @@ describe('copyOpenTabLinks', () => {
           }),
         ),
       );
-      const writeFailure = yield* copyOpenTabLinks.pipe(
+      const writeFailure = yield* copyAllOpenTabLinks.pipe(
         Effect.provide(writeLayer),
         Effect.flip,
       );
 
       assert.strictEqual(writeFailure, writeError);
+    }),
+  );
+
+  it.effect('queries and copies only the current window when requested', () =>
+    Effect.gen(function* () {
+      const scopes = yield* Ref.make<ReadonlyArray<TabQueryScope>>([]);
+      const written = yield* Ref.make('');
+      const layer = Layer.mergeAll(
+        Layer.succeed(
+          Tabs,
+          Tabs.of({
+            queryUrlCandidates: (scope) =>
+              Ref.update(scopes, (values) => [...values, scope]).pipe(
+                Effect.as(['https://current.example', 'file:///tmp/local']),
+              ),
+            open: () => Effect.void,
+          }),
+        ),
+        Layer.succeed(
+          Clipboard,
+          Clipboard.of({
+            readText: Effect.succeed(''),
+            writeText: (text) => Ref.set(written, text),
+          }),
+        ),
+      );
+
+      const result = yield* copyCurrentWindowTabLinks.pipe(
+        Effect.provide(layer),
+      );
+
+      assert.deepStrictEqual(result, { copied: 1, skipped: 1 });
+      assert.deepStrictEqual(yield* Ref.get(scopes), ['currentWindow']);
+      assert.strictEqual(yield* Ref.get(written), 'https://current.example/');
+    }),
+  );
+
+  it.effect('does not replace the clipboard for an empty current window', () =>
+    Effect.gen(function* () {
+      const writes = yield* Ref.make(0);
+      const layer = Layer.mergeAll(
+        Layer.succeed(
+          Tabs,
+          Tabs.of({
+            queryUrlCandidates: () => Effect.succeed([]),
+            open: () => Effect.void,
+          }),
+        ),
+        Layer.succeed(
+          Clipboard,
+          Clipboard.of({
+            readText: Effect.succeed(''),
+            writeText: () => Ref.update(writes, (count) => count + 1),
+          }),
+        ),
+      );
+
+      const error = yield* copyCurrentWindowTabLinks.pipe(
+        Effect.provide(layer),
+        Effect.flip,
+      );
+
+      assert.strictEqual(error._tag, 'NoValidWebUrlsError');
+      if (error._tag === 'NoValidWebUrlsError') {
+        assert.strictEqual(error.source, 'currentWindowTabs');
+      }
+      assert.strictEqual(yield* Ref.get(writes), 0);
     }),
   );
 });
@@ -171,7 +249,7 @@ describe('openClipboardLinks', () => {
           Layer.succeed(
             Tabs,
             Tabs.of({
-              queryUrlCandidates: Effect.succeed([]),
+              queryUrlCandidates: () => Effect.succeed([]),
               open: (url) =>
                 Ref.update(attempts, (urls) => [...urls, url.href]).pipe(
                   Effect.andThen(
@@ -215,7 +293,7 @@ describe('openClipboardLinks', () => {
         Layer.succeed(
           Tabs,
           Tabs.of({
-            queryUrlCandidates: Effect.succeed([]),
+            queryUrlCandidates: () => Effect.succeed([]),
             open: (url) =>
               Effect.fail(
                 new TabCreateError({

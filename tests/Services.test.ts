@@ -85,19 +85,22 @@ describe('ClipboardLive', () => {
 describe('TabsLive', () => {
   it.effect('decodes tab records without deciding URL validity', () =>
     Effect.gen(function* () {
+      let receivedQuery: chrome.tabs.QueryInfo | undefined;
       const candidates = yield* Tabs.use(
-        (tabs) => tabs.queryUrlCandidates,
+        (tabs) => tabs.queryUrlCandidates('allWindows'),
       ).pipe(
         Effect.provide(
           makeTabsLive({
             ...unusedTabsApi,
-            query: () =>
-              Promise.resolve([
+            query: (queryInfo) => {
+              receivedQuery = queryInfo;
+              return Promise.resolve([
                 {},
                 { url: 'https://example.com' },
                 { url: 'chrome://settings' },
                 { url: 'not a url' },
-              ]),
+              ]);
+            },
           }),
         ),
       );
@@ -108,6 +111,29 @@ describe('TabsLive', () => {
         'chrome://settings',
         'not a url',
       ]);
+      assert.deepStrictEqual(receivedQuery, {});
+    }),
+  );
+
+  it.effect('queries only the current window when requested', () =>
+    Effect.gen(function* () {
+      let receivedQuery: chrome.tabs.QueryInfo | undefined;
+
+      yield* Tabs.use((tabs) =>
+        tabs.queryUrlCandidates('currentWindow'),
+      ).pipe(
+        Effect.provide(
+          makeTabsLive({
+            ...unusedTabsApi,
+            query: (queryInfo) => {
+              receivedQuery = queryInfo;
+              return Promise.resolve([]);
+            },
+          }),
+        ),
+      );
+
+      assert.deepStrictEqual(receivedQuery, { currentWindow: true });
     }),
   );
 
@@ -125,7 +151,9 @@ describe('TabsLive', () => {
 
       yield* Effect.forEach(malformedValues, (value) =>
         Effect.gen(function* () {
-          const error = yield* Tabs.use((tabs) => tabs.queryUrlCandidates).pipe(
+          const error = yield* Tabs.use((tabs) =>
+            tabs.queryUrlCandidates('allWindows'),
+          ).pipe(
             Effect.provide(
               makeTabsLive({
                 ...unusedTabsApi,
@@ -144,7 +172,9 @@ describe('TabsLive', () => {
   it.effect('maps a rejected query exactly once', () =>
     Effect.gen(function* () {
       const cause = { operation: 'query' };
-      const error = yield* Tabs.use((tabs) => tabs.queryUrlCandidates).pipe(
+      const error = yield* Tabs.use((tabs) =>
+        tabs.queryUrlCandidates('allWindows'),
+      ).pipe(
         Effect.provide(
           makeTabsLive({
             ...unusedTabsApi,
