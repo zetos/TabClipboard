@@ -16,10 +16,14 @@ export class TabCreateError extends Schema.TaggedError<TabCreateError>()(
   },
 ) {}
 
+export type TabQueryScope = 'allWindows' | 'currentWindow';
+
 export class Tabs extends Context.Service<
   Tabs,
   {
-    readonly queryUrlCandidates: Effect.Effect<
+    readonly queryUrlCandidates: (
+      scope: TabQueryScope,
+    ) => Effect.Effect<
       ReadonlyArray<unknown>,
       TabsQueryError
     >;
@@ -44,17 +48,19 @@ export const makeTabsLive = (tabsApi: TabsApi) =>
   Layer.succeed(
     Tabs,
     Tabs.of({
-      queryUrlCandidates: Effect.tryPromise({
-        try: () => tabsApi.query({}),
-        catch: (cause) => new TabsQueryError({ cause }),
-      }).pipe(
-        Effect.flatMap((tabs) =>
-          decodeTabQueryResponse(tabs).pipe(
-            Effect.mapError((cause) => new TabsQueryError({ cause })),
+      queryUrlCandidates: (scope) =>
+        Effect.tryPromise({
+          try: () =>
+            tabsApi.query(scope === 'currentWindow' ? { currentWindow: true } : {}),
+          catch: (cause) => new TabsQueryError({ cause }),
+        }).pipe(
+          Effect.flatMap((tabs) =>
+            decodeTabQueryResponse(tabs).pipe(
+              Effect.mapError((cause) => new TabsQueryError({ cause })),
+            ),
           ),
+          Effect.map((tabs) => tabs.map((tab) => tab.url)),
         ),
-        Effect.map((tabs) => tabs.map((tab) => tab.url)),
-      ),
       open: (url) =>
         Effect.tryPromise({
           try: () => tabsApi.create({ url: url.href, active: false }),

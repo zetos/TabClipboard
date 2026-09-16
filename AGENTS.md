@@ -27,6 +27,6 @@
 
 ## Scope
 
-- TabClipboard has two feature workflows: copy every open HTTP(S) tab URL and open every valid HTTP(S) URL from the clipboard.
+- TabClipboard has three feature actions: copy every open HTTP(S) tab URL across all windows, copy HTTP(S) tab URLs from the current window, and open every valid HTTP(S) URL from the clipboard.
 - URL lists use one URL per line. Preserve order and duplicates, skip blank or invalid lines, and report skipped or failed entries to the user.
 - Request only the Chrome permissions required by these workflows.

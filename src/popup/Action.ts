@@ -39,9 +39,11 @@ export const describeError = Match.type<ActionError>().pipe(
   ),
   Match.tag('NoValidWebUrlsError', (error) =>
     errorStatus(
-      error.source === 'tabs'
-        ? 'No open HTTP(S) tab links were found.'
-        : 'The clipboard has no valid HTTP(S) links.',
+      error.source === 'allWindowsTabs'
+        ? 'No HTTP(S) tab links were found in any window.'
+        : error.source === 'currentWindowTabs'
+          ? 'No HTTP(S) tab links were found in this window.'
+          : 'The clipboard has no valid HTTP(S) links.',
     ),
   ),
   Match.tag('TabsQueryError', () =>

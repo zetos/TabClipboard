@@ -5,7 +5,8 @@ import { TabsLive } from '../services/Tabs';
 import { queryElement } from '../shared/Dom';
 import { run } from '../shared/run';
 import {
-  copyOpenTabLinks,
+  copyAllOpenTabLinks,
+  copyCurrentWindowTabLinks,
   openClipboardLinks,
 } from '../workflows/TabClipboard';
 import {
@@ -20,13 +21,18 @@ const AppLive = Layer.mergeAll(TabsLive, ClipboardLive);
 
 const program = Effect.gen(function* () {
   const shell = yield* queryElement<HTMLElement>('.popup-shell');
-  const copyButton = yield* queryElement<HTMLButtonElement>('#copy-tab-links');
+  const copyAllButton = yield* queryElement<HTMLButtonElement>(
+    '#copy-all-tab-links',
+  );
+  const copyCurrentButton = yield* queryElement<HTMLButtonElement>(
+    '#copy-current-tab-links',
+  );
   const openButton = yield* queryElement<HTMLButtonElement>(
     '#open-clipboard-links',
   );
   const status = yield* queryElement<HTMLElement>('#runtime-status');
   const statusMessage = yield* queryElement<HTMLElement>('.status-message');
-  const buttons = [copyButton, openButton] as const;
+  const buttons = [copyAllButton, copyCurrentButton, openButton] as const;
 
   const view = {
     setBusy: (busy: boolean) =>
@@ -52,10 +58,18 @@ const program = Effect.gen(function* () {
   };
 
   yield* Effect.sync(() => {
-    copyButton.addEventListener('click', () => {
+    copyAllButton.addEventListener('click', () => {
       runAction(
-        copyOpenTabLinks.pipe(Effect.provide(AppLive)),
-        'Collecting links from open tabs...',
+        copyAllOpenTabLinks.pipe(Effect.provide(AppLive)),
+        'Collecting links from all windows...',
+        describeCopyResult,
+      );
+    });
+
+    copyCurrentButton.addEventListener('click', () => {
+      runAction(
+        copyCurrentWindowTabLinks.pipe(Effect.provide(AppLive)),
+        'Collecting links from this window...',
         describeCopyResult,
       );
     });
